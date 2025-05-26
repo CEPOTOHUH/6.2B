@@ -127,7 +127,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="DetectedObject.cpp" />
+    <ClCompile Include="Person.cpp" />
+    <ClCompile Include="Cyclist.cpp" />
+    <ClCompile Include="DetectedObjectRegistry.cpp" />
+    <ClCompile Include="Vehicle.cpp" />
+    <ClCompile Include="Motorcycle.cpp" />
+    <ClCompile Include="Car.cpp" />
+    <ClCompile Include="UnattendedBag.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DetectedObject.h" />
+    <ClInclude Include="DetectedObjectRegistry.h" />
+    <ClInclude Include="Person.h" />
+    <ClInclude Include="Cyclist.h" />
+    <ClInclude Include="Vehicle.h" />
+    <ClInclude Include="Motorcycle.h" />
+    <ClInclude Include="Car.h" />
+    <ClInclude Include="UnattendedBag.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
