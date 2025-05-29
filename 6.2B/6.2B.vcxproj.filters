@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DetectedObject.cpp">
+    <ClCompile Include="detected_object.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Person.cpp">
@@ -44,7 +44,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DetectedObject.h">
+    <ClInclude Include="detected_object.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Person.h">
@@ -62,10 +62,10 @@
     <ClInclude Include="Car.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="UnattendedBag.h">
+    <ClInclude Include="unattended_bag.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="DetectedObjectRegistry.h">
+    <ClInclude Include="Object_database.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

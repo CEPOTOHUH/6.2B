@@ -1,28 +1,22 @@
-#include "UnattendedBag.h"
+#include "unattended_bag.h"
+#include <iostream>
 
-UnattendedBag::UnattendedBag() : DetectedObject(), detectedTimeSeconds(0) {}
+UnattendedBag::UnattendedBag() : DetectedObject() {}
 
-UnattendedBag::UnattendedBag(int x1, int y1, int x2, int y2, long long time)
-    : DetectedObject(x1, y1, x2, y2), detectedTimeSeconds(time) {
+UnattendedBag::UnattendedBag(int x1_val, int y1_val, int x2_val, int y2_val, int confidence_val)
+    : DetectedObject(x1_val, y1_val, x2_val, y2_val, confidence_val) {
 }
-UnattendedBag::UnattendedBag(const UnattendedBag& other) = default;
-UnattendedBag& UnattendedBag::operator=(const UnattendedBag& other) = default;
-UnattendedBag::UnattendedBag(UnattendedBag&& other) noexcept = default;
-UnattendedBag& UnattendedBag::operator=(UnattendedBag&& other) noexcept = default;
 
-DetectedObject* UnattendedBag::clone() const { 
+Person* UnattendedBag::clone() const {
     return new UnattendedBag(*this);
 }
 
-void UnattendedBag::print(std::ostream& os) const { 
-    os << "--- Бесхозная сумка ---\n";
-    DetectedObject::print(os);
-    os << "  Время первого обнаружения (секунды после полуночи): " << detectedTimeSeconds << "\n";
+void UnattendedBag::print(std::ostream& os) const {
+    os << "--- Обнаруженная Бесхозная Сумка ---\n";
+    DetectedObject::print(os); 
 }
 
-void UnattendedBag::inputInfo() { 
-    std::cout << "--- Ввод данных Бесхозной сумки ---\n";
-    DetectedObject::inputInfo();
-    std::cout << "  Введите время первого обнаружения (секунды после полуночи): "; std::cin >> detectedTimeSeconds;
-    std::cin.ignore(256, '\n');
+void UnattendedBag::inputInfo() {
+    std::cout << "--- Ввод данных Бесхозной Сумки ---\n";
+    DetectedObject::inputInfo(); 
 }

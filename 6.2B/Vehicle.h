@@ -1,27 +1,34 @@
 #pragma once
-#include "DetectedObject.h" 
-#include <cstddef> 
+#include "person.h"
+#include <iostream>
 
-class Vehicle : public DetectedObject {
+class Vehicle : public Person {
 protected:
-    int colorRGB;
-    char* licensePlate;
-    size_t licensePlateLength;
-    size_t licensePlateCapacity;
+    int color;
+    char* plate;
 
 public:
     Vehicle();
     Vehicle(int x1, int y1, int x2, int y2, int color, const char* plate);
-    virtual ~Vehicle() override; 
 
+    ~Vehicle() override;
     Vehicle(const Vehicle& other);
     Vehicle& operator=(const Vehicle& other);
     Vehicle(Vehicle&& other) noexcept;
     Vehicle& operator=(Vehicle&& other) noexcept;
 
-    DetectedObject* clone() const override; 
+    Person* clone() const override;
+
     void print(std::ostream& os) const override;
     void inputInfo() override;
 
-    void setLicensePlate(const char* newPlate);
+    int getColor() const;
+    const char* getPlate() const;
+
+    void setColor(int c);
+    void setPlate(const char* p);
+
+private:
+    void copyPlate(const char* p);
+    void deletePlate();
 };

@@ -1,26 +1,22 @@
-#include "Cyclist.h"
+#include "cyclist.h"
+#include <iostream>
 
 Cyclist::Cyclist() : Person() {}
 
-Cyclist::Cyclist(int x1, int y1, int x2, int y2,
-    int g, int c, int gl, int b)
-    : Person(x1, y1, x2, y2, g, c, gl, b) {
+Cyclist::Cyclist(int x1_val, int y1_val, int x2_val, int y2_val, int gender_val, int childStatus_val, int glassesStatus_val, int beardStatus_val)
+    : Person(x1_val, y1_val, x2_val, y2_val, gender_val, childStatus_val, glassesStatus_val, beardStatus_val) {
 }
-Cyclist::Cyclist(const Cyclist& other) = default;
-Cyclist& Cyclist::operator=(const Cyclist& other) = default;
-Cyclist::Cyclist(Cyclist&& other) noexcept = default;
-Cyclist& Cyclist::operator=(Cyclist&& other) noexcept = default;
 
-DetectedObject* Cyclist::clone() const { 
+Person* Cyclist::clone() const {
     return new Cyclist(*this);
 }
 
-void Cyclist::print(std::ostream& os) const { 
+void Cyclist::print(std::ostream& os) const {
     os << "--- Велосипедист ---\n";
     Person::print(os);
 }
 
-void Cyclist::inputInfo() { 
+void Cyclist::inputInfo() {
     std::cout << "--- Ввод данных Велосипедиста ---\n";
     Person::inputInfo();
 }

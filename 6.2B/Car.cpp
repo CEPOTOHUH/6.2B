@@ -1,29 +1,22 @@
-#include "Car.h"
+#include "car.h"
+#include <iostream>
 
-Car::Car() : Vehicle(), isTaxi(false) {}
+Car::Car() : Vehicle() {}
 
-Car::Car(int x1, int y1, int x2, int y2, int color, const char* plate, bool taxi)
-    : Vehicle(x1, y1, x2, y2, color, plate), isTaxi(taxi) {
+Car::Car(int x1_val, int y1_val, int x2_val, int y2_val, int color_val, const char* plate_val)
+    : Vehicle(x1_val, y1_val, x2_val, y2_val, color_val, plate_val) {
 }
 
-Car::Car(const Car& other) = default;
-Car& Car::operator=(const Car& other) = default;
-Car::Car(Car&& other) noexcept = default;
-Car& Car::operator=(Car&& other) noexcept = default;
-
-DetectedObject* Car::clone() const { 
+Person* Car::clone() const {
     return new Car(*this);
 }
 
-void Car::print(std::ostream& os) const { 
+void Car::print(std::ostream& os) const {
     os << "--- Автомобиль ---\n";
-    Vehicle::print(os);
-    os << "  Такси (0=Нет, 1=Да): " << (isTaxi ? "Да" : "Нет") << "\n";
+    Vehicle::print(os); 
 }
 
-void Car::inputInfo() { 
+void Car::inputInfo() {
     std::cout << "--- Ввод данных Автомобиля ---\n";
-    Vehicle::inputInfo();
-    std::cout << "  Такси (0=Нет, 1=Да): "; std::cin >> isTaxi;
-    std::cin.ignore(256, '\n');
+    Vehicle::inputInfo(); 
 }

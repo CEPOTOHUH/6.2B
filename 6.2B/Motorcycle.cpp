@@ -1,25 +1,22 @@
-#include "Motorcycle.h"
+#include "motorcycle.h"
+#include <iostream>
 
 Motorcycle::Motorcycle() : Vehicle() {}
 
-Motorcycle::Motorcycle(int x1, int y1, int x2, int y2, int color, const char* plate)
-    : Vehicle(x1, y1, x2, y2, color, plate) {
+Motorcycle::Motorcycle(int x1_val, int y1_val, int x2_val, int y2_val, int color_val, const char* plate_val)
+    : Vehicle(x1_val, y1_val, x2_val, y2_val, color_val, plate_val) {
 }
-Motorcycle::Motorcycle(const Motorcycle& other) = default;
-Motorcycle& Motorcycle::operator=(const Motorcycle& other) = default;
-Motorcycle::Motorcycle(Motorcycle&& other) noexcept = default;
-Motorcycle& Motorcycle::operator=(Motorcycle&& other) noexcept = default;
 
-DetectedObject* Motorcycle::clone() const { 
+Person* Motorcycle::clone() const {
     return new Motorcycle(*this);
 }
 
-void Motorcycle::print(std::ostream& os) const { 
+void Motorcycle::print(std::ostream& os) const {
     os << "--- Мотоцикл ---\n";
     Vehicle::print(os);
 }
 
-void Motorcycle::inputInfo() { 
+void Motorcycle::inputInfo() {
     std::cout << "--- Ввод данных Мотоцикла ---\n";
     Vehicle::inputInfo();
 }
