@@ -1,112 +1,115 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <iostream>
-#include <clocale> // Для setlocale
+#include <limits>
+#include <clocale>
+#include <cstring> 
+#include "DetectedObject.h"
+#include "Person.h"
+#include "Cyclist.h"
+#include "Vehicle.h"
+#include "Motorcycle.h"
+#include "Car.h"
+#include "UnattendedBag.h"
+#include "object_database.h" 
 
-#include "object_database.h"
-#include "cyclist.h"
-#include "motorcycle.h"
-#include "detected_object.h"
-#include "unattended_bag.h"
-#include "car.h"
-#include "person.h"
-
-// Вспомогательная функция для очистки буфера ввода
 void clearInputBuffer() {
-    int c;
-    while ((c = std::cin.get()) != '\n' && c != EOF);
-}
-void createAndAddObject(ObjectDatabase& db) {
-    std::cout << "\nВыберите тип объекта для добавления:\n";
-    std::cout << "1. Велосипедист\n";
-    std::cout << "2. Мотоцикл\n";
-    std::cout << "3. Бесхозная сумка\n";
-    std::cout << "4. Автомобиль\n";
-    std::cout << "Введите номер: ";
-    int type_choice;
-    std::cin >> type_choice;
-    clearInputBuffer(); 
-
-    Person* newObj = nullptr;
-
-    switch (type_choice) {
-    case 1:
-        newObj = new Cyclist();
-        break;
-    case 2:
-        newObj = new Motorcycle();
-        break;
-    case 3:
-        newObj = new UnattendedBag();
-        break;
-    case 4:
-        newObj = new Car();
-        break;
-    default:
-        std::cout << "Неверный тип объекта. Попробуйте снова.\n";
-        return;
-    }
-
-    if (newObj) {
-        newObj->inputInfo(); 
-        db.add(newObj);     
-        delete newObj;       
-        std::cout << "Объект успешно добавлен.\n";
-    }
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
-void removeObjectByIndex(ObjectDatabase& db) {
-    if (db.isEmpty()) {
-        std::cout << "База данных пуста, нет объектов для удаления.\n";
-        return;
-    }
-
-    std::cout << "Введите индекс объекта для удаления (от 0 до " << db.getSize() - 1 << "): ";
-    size_t index;
-    std::cin >> index;
-    clearInputBuffer();
-
-    if (index < db.getSize()) {
-        db.remove(index);
-        std::cout << "Объект по индексу " << index << " успешно удален.\n";
-    }
-    else {
-        std::cout << "Неверный индекс. Объект не найден.\n";
+int getIntInput(const char* prompt, int minVal, int maxVal) {
+    int value;
+    while (true) {
+        std::cout << prompt;
+        if (std::cin >> value && value >= minVal && value <= maxVal) {
+            clearInputBuffer();
+            return value;
+        }
+        else {
+            std::cout << "Ошибка: Некорректный ввод. Пожалуйста, введите число от " << minVal << " до " << maxVal << ".\n";
+            std::cin.clear();
+            clearInputBuffer();
+        }
     }
 }
-
-void runObjectDatabaseInteractiveTest() {
-    ObjectDatabase my_database;
+void getCharInput(const char* prompt, char* buffer, size_t bufferSize) {
+    std::cout << prompt;
+    std::cin.getline(buffer, bufferSize);
+}
+void interactiveDatabaseMenu() {
+    ObjectDatabase db;
     int choice;
 
     do {
-        std::cout << "\n=== Меню Базы Данных Объектов ===\n";
-        std::cout << "1. Добавить новый объект (ввод вручную)\n";
+        std::cout << "\n--- Меню управления базой данных объектов ---\n";
+        std::cout << "1. Добавить объект\n";
         std::cout << "2. Удалить объект по индексу\n";
-        std::cout << "3. Вывести все объекты\n";
-        std::cout << "4. Очистить всю базу данных\n";
-        std::cout << "0. Назад в главное меню\n";
-        std::cout << "Введите ваш выбор: ";
-        std::cin >> choice;
-        clearInputBuffer(); 
+        std::cout << "3. Показать все объекты\n";
+        std::cout << "4. Очистить базу данных\n";
+        std::cout << "5. Показать размер базы данных\n";
+        std::cout << "6. Проверить, пуста ли база данных\n";
+        std::cout << "0. Выйти из меню\n";
+
+        choice = getIntInput("Выберите действие: ", 0, 6);
 
         switch (choice) {
-        case 1:
-            createAndAddObject(my_database);
+        case 1: {
+            std::cout << "\nВыберите тип объекта для добавления:\n";
+            std::cout << "1. Человек\n";
+            std::cout << "2. Велосипедист\n";
+            std::cout << "3. Автомобиль\n";
+            std::cout << "4. Мотоцикл\n";
+            std::cout << "5. Бесхозная сумка\n";
+            int objType = getIntInput("Ваш выбор: ", 1, 5);
+            DetectedObject* newObj = nullptr; 
+
+            switch (objType) {
+            case 1: newObj = new Person(); break;
+            case 2: newObj = new Cyclist(); break;
+            case 3: newObj = new Car(); break;
+            case 4: newObj = new Motorcycle(); break;
+            case 5: newObj = new UnattendedBag(); break;
+            default: break;
+            }
+
+            if (newObj) {
+                newObj->inputInfo(); 
+                db.add(newObj); 
+                delete newObj; 
+                std::cout << "Объект успешно добавлен.\n";
+            }
+            else {
+                std::cout << "Неизвестный тип объекта.\n";
+            }
             break;
-        case 2:
-            removeObjectByIndex(my_database);
+        }
+        case 2: {
+            if (db.isEmpty()) {
+                std::cout << "База данных пуста, нечего удалять.\n";
+                break;
+            }
+            size_t indexToRemove = getIntInput("Введите индекс объекта для удаления (начиная с 0): ", 0, db.getSize() - 1);
+            db.remove(indexToRemove);
+            std::cout << "Объект по индексу " << indexToRemove << " удален.\n";
             break;
+        }
         case 3:
-            my_database.printAll();
+            db.printAll();
             break;
         case 4:
-            my_database.clear();
-            std::cout << "База данных полностью очищена.\n";
+            db.clear();
+            std::cout << "База данных очищена.\n";
+            break;
+        case 5:
+            std::cout << "Текущий размер базы данных: " << db.getSize() << "\n";
+            break;
+        case 6:
+            std::cout << "База данных " << (db.isEmpty() ? "пуста" : "не пуста") << ".\n";
             break;
         case 0:
-            std::cout << "Возврат в главное меню.\n";
+            std::cout << "Выход из меню базы данных.\n";
             break;
         default:
-            std::cout << "Неверный выбор. Пожалуйста, попробуйте снова.\n";
             break;
         }
     } while (choice != 0);
@@ -114,29 +117,12 @@ void runObjectDatabaseInteractiveTest() {
 
 
 int main() {
-    setlocale(LC_ALL, "ru");
-    int main_choice;
+    setlocale(LC_ALL, "Russian");
 
-    do {
-        std::cout << "\n=== Главное Меню Программы ===\n";
-        std::cout << "1. Запустить интерактивное тестирование Базы Данных Объектов\n";
-        std::cout << "0. Выход\n";
-        std::cout << "Введите ваш выбор: ";
-        std::cin >> main_choice;
-        clearInputBuffer(); // Очищаем буфер после ввода числа
+    std::cout << "Демонстрация работы динамического массива объектов с иерархией классов и ручным вводом.\n\n";
+    interactiveDatabaseMenu();
 
-        switch (main_choice) {
-        case 1:
-            runObjectDatabaseInteractiveTest();
-            break;
-        case 0:
-            std::cout << "Выход из программы.\n";
-            break;
-        default:
-            std::cout << "Неверный выбор. Пожалуйста, попробуйте снова.\n";
-            break;
-        }
-    } while (main_choice != 0);
+    std::cout << "\nПрограмма завершена.\n";
 
     return 0;
 }

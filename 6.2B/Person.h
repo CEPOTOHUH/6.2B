@@ -1,9 +1,9 @@
 #pragma once
-#include <iostream>
 
-class Person {
-protected:
-    int x1, y1, x2, y2;
+#include "DetectedObject.h" // Наследование от DetectedObject
+
+class Person : public DetectedObject {
+private:
     int gender;
     int childStatus;
     int glassesStatus;
@@ -11,34 +11,30 @@ protected:
 
 public:
     Person();
-    Person(int x1, int y1, int x2, int y2, int gender, int childStatus, int glassesStatus, int beardStatus);
+    Person(int x1, int y1, int x2, int y2,
+        int g, int c, int gl, int b);
+    ~Person() override = default;
+    Person(const Person& other) = default;
+    Person& operator=(const Person& other) = default;
+    Person(Person&& other) noexcept = default;
+    Person& operator=(Person&& other) noexcept = default;
 
-    virtual ~Person();
-    Person(const Person& other);
-    Person& operator=(const Person& other);
-    Person(Person&& other) noexcept;
-    Person& operator=(Person&& other) noexcept;
+    DetectedObject* clone() const override {
+        return new Person(*this);
+    }
 
-    virtual Person* clone() const = 0;
+    void print(std::ostream& os) const override;
+    void inputInfo() override;
 
-    virtual void print(std::ostream& os) const;
-    virtual void inputInfo();
-
-    int getX1() const;
-    int getY1() const;
-    int getX2() const;
-    int getY2() const;
-    int getGender() const;
-    int getChildStatus() const;
-    int getGlassesStatus() const;
-    int getBeardStatus() const;
-
-    void setX1(int x);
-    void setY1(int y);
-    void setX2(int x);
-    void setY2(int y);
     void setGender(int g);
+    int getGender() const;
+
     void setChildStatus(int c);
+    int getChildStatus() const;
+
     void setGlassesStatus(int gl);
+    int getGlassesStatus() const;
+
     void setBeardStatus(int b);
+    int getBeardStatus() const;
 };

@@ -1,17 +1,17 @@
 #include "object_database.h"
 #include <iostream>
-
+#include <utility> 
 const size_t INITIAL_CAPACITY = 4; 
 
 void ObjectDatabase::expandCapacity() {
     size_t newCapacity = capacity == 0 ? INITIAL_CAPACITY : capacity * 2;
-    Person** newData = new Person * [newCapacity];
+    DetectedObject** newData = new DetectedObject * [newCapacity];
 
     for (size_t i = 0; i < currentSize; ++i) {
-        newData[i] = data[i]; 
+        newData[i] = data[i];
     }
 
-    delete[] data; 
+    delete[] data;
     data = newData;
     capacity = newCapacity;
 }
@@ -19,14 +19,15 @@ void ObjectDatabase::expandCapacity() {
 ObjectDatabase::ObjectDatabase() : data(nullptr), capacity(0), currentSize(0) {}
 
 ObjectDatabase::~ObjectDatabase() {
-    clear(); 
+    clear();
 }
 
 ObjectDatabase::ObjectDatabase(const ObjectDatabase& other)
     : data(nullptr), capacity(0), currentSize(0) {
     if (other.currentSize > 0) {
-        data = new Person * [other.currentSize];
-        capacity = other.currentSize;
+        capacity = other.currentSize; 
+        data = new DetectedObject * [capacity];
+
         currentSize = 0;
         for (size_t i = 0; i < other.currentSize; ++i) {
             add(other.data[i]);
@@ -38,17 +39,9 @@ ObjectDatabase& ObjectDatabase::operator=(const ObjectDatabase& other) {
     if (this != &other) {
         ObjectDatabase temp(other);
 
-        Person** temp_data = data;
-        data = temp.data;
-        temp.data = temp_data;
-
-        size_t temp_capacity = capacity;
-        capacity = temp.capacity;
-        temp.capacity = temp_capacity;
-
-        size_t temp_currentSize = currentSize;
-        currentSize = temp.currentSize;
-        temp.currentSize = temp_currentSize;
+        std::swap(data, temp.data);
+        std::swap(capacity, temp.capacity);
+        std::swap(currentSize, temp.currentSize);
     }
     return *this;
 }
@@ -74,7 +67,11 @@ ObjectDatabase& ObjectDatabase::operator=(ObjectDatabase&& other) noexcept {
     return *this;
 }
 
-void ObjectDatabase::add(Person* obj) {
+void ObjectDatabase::add(DetectedObject* obj) {
+    if (obj == nullptr) {
+        std::cerr << "Ошибка: Попытка добавить NULL объект в базу данных.\n";
+        return;
+    }
     if (currentSize >= capacity) {
         expandCapacity();
     }

@@ -1,16 +1,9 @@
-#include "cyclist.h"
+#include "Cyclist.h"
 #include <iostream>
 
+// Реализация методов Cyclist
 Cyclist::Cyclist() : Person() {}
-
-Cyclist::Cyclist(int x1_val, int y1_val, int x2_val, int y2_val, int gender_val, int childStatus_val, int glassesStatus_val, int beardStatus_val)
-    : Person(x1_val, y1_val, x2_val, y2_val, gender_val, childStatus_val, glassesStatus_val, beardStatus_val) {
-}
-
-Person* Cyclist::clone() const {
-    return new Cyclist(*this);
-}
-
+Cyclist::Cyclist(int x1, int y1, int x2, int y2, int g, int c, int gl, int b) : Person(x1, y1, x2, y2, g, c, gl, b) {}
 void Cyclist::print(std::ostream& os) const {
     os << "--- Велосипедист ---\n";
     Person::print(os);
